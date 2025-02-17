@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔓 فك تشفير الملفات الملغمة</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #222; color: #fff; }
+        input, button { margin: 10px; padding: 10px; }
+        textarea { width: 90%; height: 300px; margin-top: 10px; background: #333; color: #0f0; border: 1px solid #444; }
+    </style>
+</head>
+<body>
+
+    <h2>🔓 فك تشفير الملفات الملغمة</h2>
+    <input type="file" id="fileInput">
+    <button onclick="analyzeFile()">📂 تحليل الملف</button>
+    <textarea id="output" readonly placeholder="📜 سيتم عرض الكود هنا..."></textarea>
+
+    <script>
+        function decodeBase64(encoded) {
+            try {
+                return atob(encoded);
+            } catch (error) {
+                return "⚠️ فشل فك Base64!";
+            }
+        }
+
+        function decodeXOR(data, key) {
+            let decoded = "";
+            for (let i = 0; i < data.length; i++) {
+                decoded += String.fromCharCode(data.charCodeAt(i) ^ key.charCodeAt(i % key.length));
+            }
+            return decoded;
+        }
+
+        function analyzeFile() {
+            const fileInput = document.getElementById("fileInput");
+
+            // ✅ تأكد أن المستخدم اختار ملفًا قبل التحليل
+            if (!fileInput || !fileInput.files.length) {
+                alert("⚠️ الرجاء اختيار ملف قبل التحليل!");
+                return;
+            }
+
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                let fileContent = event.target.result;
+                let output = "🔍 **تحليل الملف:**\n\n";
+
+                // ✅ فحص Base64
+                if (/^[A-Za-z0-9+/=]+$/.test(fileContent)) {
+                    output += "🟢 تم اكتشاف Base64!\n📜 **المحتوى بعد فك التشفير:**\n" + decodeBase64(fileContent) + "\n\n";
+                }
+
+                // ✅ فحص XOR (بافتراض مفتاح معروف)
+                let xorKey = "mysecretkey"; 
+                let xorDecoded = decodeXOR(fileContent, xorKey);
+                if (xorDecoded.includes("function") || xorDecoded.includes("var ")) {
+                    output += "🟢 تم اكتشاف تشفير XOR!\n📜 **المحتوى بعد فك التشفير:**\n" + xorDecoded + "\n\n";
+                }
+
+                document.getElementById("output").value = output;
+            };
+
+            reader.readAsText(file);
+        }
+    </script>
+
+</body>
+</html>
