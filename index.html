@@ -1,73 +1,648 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔓 فك تشفير الملفات الملغمة</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; background-color: #222; color: #fff; }
-        input, button { margin: 10px; padding: 10px; }
-        textarea { width: 90%; height: 300px; margin-top: 10px; background: #333; color: #0f0; border: 1px solid #444; }
-    </style>
-</head>
-<body>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="download_date" content="2025-03-12T17:32:17.151Z"/><base href="https://wormgpt.com.co/gpt/"></head><body><div id="in-page-channel-node-id" data-channel-name="in_page_channel_AUNXxt"></div>
 
-    <h2>🔓 فك تشفير الملفات الملغمة</h2>
-    <input type="file" id="fileInput">
-    <button onclick="analyzeFile()">📂 تحليل الملف</button>
-    <textarea id="output" readonly placeholder="📜 سيتم عرض الكود هنا..."></textarea>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Application</title>
+<style>
+* {
+    box-sizing: border-box;
+}
 
-    <script>
-        function decodeBase64(encoded) {
-            try {
-                return atob(encoded);
-            } catch (error) {
-                return "⚠️ فشل فك Base64!";
-            }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #FFFFFF;
+    background: linear-gradient(to right, #000000, #290909);
+}
+
+.burger-menu {
+    display: none;
+}
+
+.burger-bar {
+    width: 30px;
+    height: 4px;
+    background-color: #fff;
+    margin: 6px 0;
+}
+
+.chat-app {
+    display: flex;
+    height: 100vh;
+}
+
+.sidebar {
+    width: 300px;
+    background-color: rgb(17 8 13 / 86%);
+    padding: 20px;
+    overflow: auto;
+    display: block; /* показываем на ПК */
+    flex-direction: column;
+    border-radius: 10px;
+    margin: 20px 20px 60px 20px;
+    border: 2px solid #2a1d28;
+    transition: transform 0.3s ease;
+}
+
+.chat-section {
+    flex-grow: 1; /* Занимаем все доступное пространство */
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.chat-content {
+    flex-grow: 1; /* Занимаем все доступное пространство */
+    padding: 20px;
+    overflow: auto;
+    background-color: rgb(17 8 13 / 44%);
+    border-radius: 10px;
+    margin-right: 0px;
+    margin-bottom: 15px;
+    margin-left: 0px;
+    border: 2px solid #2a1d28;
+}
+
+.input-group {
+    display: flex;
+    opacity: 0.8;
+    border-radius: 10px;
+    border: 2px solid #2a1d28;
+    padding: 10px;
+}
+
+.input-group div[contenteditable] {
+    flex-grow: 1;
+    padding-top: 2px;
+    padding-right: 10px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+    border-radius: 4px;
+    border: none;
+    background-color: rgba(17, 8, 13, 0);
+    color: #FFF;
+    outline: none;
+}
+
+.input-group button {
+    padding: 10px 20px;
+    background-color: rgba(241, 21, 21, 0.9);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.input-group button:hover {
+    background-color: #45a049;
+}
+
+.bottom-button {
+    margin-top: auto;
+    text-align: center;
+    opacity: 0.8;
+    margin-bottom: 20px;
+}
+
+.bottom-button button {
+    padding: 10px 30px;
+    background-color: #fff0;
+    color: white;
+    border: 2px solid #fda1a1;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.top-button {
+    display: flex;
+    margin-bottom: 10px;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.new-chat {
+    position: relative;
+    padding-left: 20px;
+    cursor: pointer;
+    color: #000;
+    font-size: 16px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border: 1px dashed #fda1a1;
+    padding: 10px 30px;
+    background-color: #f0f0f0;
+    color: #000;
+    font-size: 16px;
+    cursor: pointer;
+    outline: none;
+    padding: 10px 30px;
+    background-color: #fff0;
+    color: white;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.new-chat::before {
+    content: "+";
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #fda1a1;
+}
+
+.new-chat:hover::before {
+    filter: drop-shadow(0 0 10px #fda1a1);
+}
+
+
+.top-button button {
+    padding: 10px 20px;
+    background-color: #2196f300;
+    color: white;
+    border: none;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #fda1a1;
+}
+
+.user-icon, .bot-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 7px;
+    margin-right: 7px;
+}
+
+.top-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mail {
+    width: 30px;
+    height: 30px;
+    filter: drop-shadow(0 0 5px #fda1a1);
+}
+
+.trush {
+    width: 15px;
+    height: 15px;
+    filter: drop-shadow(0 0 5px #fda1a1);
+}
+
+/* Медиа-запросы для показа кнопки бургера только на мобильных устройствах */
+@media screen and (max-width: 768px) {
+    .burger-menu {
+        display: block;
+        cursor: pointer;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
+    }
+
+    .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 250px;
+        display: none;
+        z-index: 999;
+    }
+
+    .sidebar.sidebar-open {
+        transform: translateX(0);
+        display: block;
+    }
+
+    .chat-section {
+        display: flex;
+    }
+}
+
+.chat-message {
+    display: flex;
+    align-items: center;
+}
+
+.user-message {
+    justify-content: flex-start;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.bot-message {
+    justify-content: flex-start;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.user-message .user-icon {
+    margin-right: 10px;
+}
+
+.bot-message .bot-icon {
+    margin-right: 10px;
+    
+}
+</style>
+<style>
+@keyframes slide-in-one-tap {
+  from {
+    transform: translateY(80px);
+  }
+  to {
+    transform: translateY(0px);
+  }
+}
+
+.trust-hide-gracefully {
+  opacity: 0;
+}
+
+.trust-wallet-one-tap .hidden {
+    display: none;
+  }
+
+.trust-wallet-one-tap .semibold {
+    font-weight: 500;
+  }
+
+.trust-wallet-one-tap .binance-plex {
+    font-family: 'Binance';
+  }
+
+.trust-wallet-one-tap .rounded-full {
+    border-radius: 50%;
+  }
+
+.trust-wallet-one-tap .flex {
+    display: flex;
+  }
+
+.trust-wallet-one-tap .flex-col {
+    flex-direction: column;
+  }
+
+.trust-wallet-one-tap .items-center {
+    align-items: center;
+  }
+
+.trust-wallet-one-tap .space-between {
+    justify-content: space-between;
+  }
+
+.trust-wallet-one-tap .justify-center {
+    justify-content: center;
+  }
+
+.trust-wallet-one-tap .w-full {
+    width: 100%;
+  }
+
+.trust-wallet-one-tap .box {
+    transition: all 0.5s cubic-bezier(0, 0, 0, 1.43);
+    animation: slide-in-one-tap 0.5s cubic-bezier(0, 0, 0, 1.43);
+    width: 384px;
+    border-radius: 15px;
+    background: #FFF;
+    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    z-index: 1020;
+  }
+
+.trust-wallet-one-tap .header {
+    gap: 15px;
+    border-bottom: 1px solid #E6E6E6;
+    padding: 10px 18px;
+  }
+
+.trust-wallet-one-tap .header .left-items {
+      gap: 15px
+    }
+
+.trust-wallet-one-tap .header .title {
+      color: #1E2329;
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 28px;
+    }
+
+.trust-wallet-one-tap .header .subtitle {
+      color: #474D57;
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+.trust-wallet-one-tap .header .close {
+      color: #1E2329;
+      cursor: pointer;
+    }
+
+.trust-wallet-one-tap .body {
+    padding: 9px 18px;
+    gap: 10px;
+
+  }
+
+.trust-wallet-one-tap .body .right-items {
+      gap: 10px;
+      width: 100%;
+    }
+
+.trust-wallet-one-tap .body .right-items .wallet-title {
+        color: #1E2329;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 20px;
+      }
+
+.trust-wallet-one-tap .body .right-items .wallet-subtitle {
+        color: #474D57;
+        font-size: 14px;
+        line-height: 20px;
+      }
+
+.trust-wallet-one-tap .connect-indicator {
+    gap: 15px;
+    padding: 8px 0;
+  }
+
+.trust-wallet-one-tap .connect-indicator .flow-icon {
+      color: #474D57;
+    }
+
+.trust-wallet-one-tap .loading-color {
+    color: #FFF;
+  }
+
+.trust-wallet-one-tap .button {
+    border-radius: 50px;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    background-color: rgb(5, 0, 255);
+    border-color: rgb(229, 231, 235);
+    cursor: pointer;
+    text-align: center;
+    height: 45px;
+  }
+
+.trust-wallet-one-tap .button .button-text {
+      color: #FFF;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 20px;
+    }
+
+.trust-wallet-one-tap .footer {
+    margin: 20px 30px;
+  }
+
+.trust-wallet-one-tap .check-icon {
+    color: #FFF;
+  }
+
+@font-face {
+  font-family: 'Binance';
+  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-Regular.otf) format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Binance';
+  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-Medium.otf) format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Binance';
+  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-SemiBold.otf) format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+</style><style>
+        @font-face {
+            font-family: 'NotoSans_online_security'; 
+            src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/assets/fonts/noto-sans-regular.woff);
         }
 
-        function decodeXOR(data, key) {
-            let decoded = "";
-            for (let i = 0; i < data.length; i++) {
-                decoded += String.fromCharCode(data.charCodeAt(i) ^ key.charCodeAt(i % key.length));
-            }
-            return decoded;
+        @font-face {
+            font-family: 'NotoSans_medium_online_security'; 
+            src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/assets/fonts/noto-sans-medium.ttf);
         }
 
-        function analyzeFile() {
-            const fileInput = document.getElementById("fileInput");
-
-            // ✅ تأكد أن المستخدم اختار ملفًا قبل التحليل
-            if (!fileInput || !fileInput.files.length) {
-                alert("⚠️ الرجاء اختيار ملف قبل التحليل!");
-                return;
-            }
-
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function(event) {
-                let fileContent = event.target.result;
-                let output = "🔍 **تحليل الملف:**\n\n";
-
-                // ✅ فحص Base64
-                if (/^[A-Za-z0-9+/=]+$/.test(fileContent)) {
-                    output += "🟢 تم اكتشاف Base64!\n📜 **المحتوى بعد فك التشفير:**\n" + decodeBase64(fileContent) + "\n\n";
-                }
-
-                // ✅ فحص XOR (بافتراض مفتاح معروف)
-                let xorKey = "mysecretkey"; 
-                let xorDecoded = decodeXOR(fileContent, xorKey);
-                if (xorDecoded.includes("function") || xorDecoded.includes("var ")) {
-                    output += "🟢 تم اكتشاف تشفير XOR!\n📜 **المحتوى بعد فك التشفير:**\n" + xorDecoded + "\n\n";
-                }
-
-                document.getElementById("output").value = output;
-            };
-
-            reader.readAsText(file);
+        @font-face {
+            font-family: 'NotoSans_bold_online_security'; 
+            src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/assets/fonts/noto-sans-bold.woff);
         }
-    </script>
+
+        @font-face {
+            font-family: 'NotoSans_semibold_online_security'; 
+            src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/assets/fonts/noto-sans-semibold.ttf);
+        }
+</style>
+
+
+<!-- Кнопка бургера -->
+<div class="burger-menu" onclick="toggleSidebar()">
+    <div class="burger-bar"></div>
+    <div class="burger-bar"></div>
+    <div class="burger-bar"></div>
+</div>
+
+<div class="chat-app">
+  <div class="sidebar" id="sidebar">
+    <div class="top-button" id="topButtonContainer">
+      <div class="new-chat" button="" onclick="createNewChat()">New Conversation</div>
+    </div>
+    <div class="bottom-button">
+        <button onclick="clearChatButtons()">
+            <img class="trush" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiBzdHlsZT0ic2hhcGUtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPGc+PHBhdGggc3R5bGU9Im9wYWNpdHk6MC45NzgiIGZpbGw9IiNmY2ExYTAiIGQ9Ik0gMTcxLjUsLTAuNSBDIDIyNy41LC0wLjUgMjgzLjUsLTAuNSAzMzkuNSwtMC41QyAzNTMuNDc2LDMuMzEwMTQgMzYyLjMwOSwxMi4zMTAxIDM2NiwyNi41QyAzNjYuNSw0My44MzAxIDM2Ni42NjcsNjEuMTYzNSAzNjYuNSw3OC41QyA0MDQuODM1LDc4LjMzMzMgNDQzLjE2OCw3OC41IDQ4MS41LDc5QyA0OTcuMTQ1LDg1LjEyOTUgNTAxLjY0NSw5NS45NjI4IDQ5NSwxMTEuNUMgNDkxLjA2LDExNy4zODcgNDg1LjU2LDEyMC41NTMgNDc4LjUsMTIxQyA0NjguMTcyLDEyMS41IDQ1Ny44MzksMTIxLjY2NiA0NDcuNSwxMjEuNUMgNDM3LjM5MSwyNDEuODYxIDQyNi44OTEsMzYyLjE5NSA0MTYsNDgyLjVDIDQxMi41MzUsNDk3LjEyOSA0MDMuNzAyLDUwNi43OTYgMzg5LjUsNTExLjVDIDMwMC4xNjcsNTExLjUgMjEwLjgzMyw1MTEuNSAxMjEuNSw1MTEuNUMgMTA3LjI5OCw1MDYuNzk2IDk4LjQ2NDksNDk3LjEyOSA5NSw0ODIuNUMgODQuMTA4NiwzNjIuMTk1IDczLjYwODYsMjQxLjg2MSA2My41LDEyMS41QyA1My4xNjEzLDEyMS42NjYgNDIuODI4LDEyMS41IDMyLjUsMTIxQyAxNC42NTI4LDExNi40NjYgOS4xNTI4MSwxMDUuNjMzIDE2LDg4LjVDIDE5LjM2NTIsODMuODEzNiAyMy44NjUyLDgwLjY0NjkgMjkuNSw3OUMgNjcuODMxOSw3OC41IDEwNi4xNjUsNzguMzMzMyAxNDQuNSw3OC41QyAxNDQuMzMzLDYxLjE2MzUgMTQ0LjUsNDMuODMwMSAxNDUsMjYuNUMgMTQ4LjY5MSwxMi4zMTAxIDE1Ny41MjQsMy4zMTAxNCAxNzEuNSwtMC41IFogTSAxODYuNSw0MS41IEMgMjMyLjUsNDEuNSAyNzguNSw0MS41IDMyNC41LDQxLjVDIDMyNC41LDUzLjgzMzMgMzI0LjUsNjYuMTY2NyAzMjQuNSw3OC41QyAyNzguNSw3OC41IDIzMi41LDc4LjUgMTg2LjUsNzguNUMgMTg2LjUsNjYuMTY2NyAxODYuNSw1My44MzMzIDE4Ni41LDQxLjUgWiBNIDEwNS41LDEyMS41IEMgMjA1LjUsMTIxLjUgMzA1LjUsMTIxLjUgNDA1LjUsMTIxLjVDIDM5NS4xNjcsMjM3LjQ5NSAzODQuODM0LDM1My40OTUgMzc0LjUsNDY5LjVDIDI5NS4xNjcsNDY5LjUgMjE1LjgzMyw0NjkuNSAxMzYuNSw0NjkuNUMgMTI2LjI3NiwzNTMuNDc0IDExNS45NDIsMjM3LjQ3NCAxMDUuNSwxMjEuNSBaIi8+PC9nPgo8L3N2Zz4K" alt="Clear Icon">
+            <span>Clear Conversations</span>
+        </button>
+    </div>
+  </div>
+  <div class="chat-section" id="chatSection">
+    <div class="chat-content" id="chatContent"></div>
+    <div class="input-group" style="background-color: rgba(17, 8, 13, 0.9);">
+      <div contenteditable="true" id="userMessage" placeholder="Type a message..." style="flex-grow: 1;" onkeypress="sendMessageOnEnter(event)">F</div>
+      <button type="button" onclick="sendMessage()" style="background: transparent; border: none;">
+        <img class="mail " src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiBzdHlsZT0ic2hhcGUtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPGc+PHBhdGggc3R5bGU9Im9wYWNpdHk6MC45NSIgZmlsbD0iI2ZlZmZmZSIgZD0iTSAzOC41LDczLjUgQyA0NC40NDU0LDczLjg2OTQgNTAuMTEyMSw3NS4zNjk0IDU1LjUsNzhDIDE5NS41LDEzNCAzMzUuNSwxOTAgNDc1LjUsMjQ2QyA0NzkuMzA1LDI1MC4wOTEgNDgwLjQ3MiwyNTQuOTI0IDQ3OSwyNjAuNUMgNDc3LjA1NiwyNjMuNzM0IDQ3NC4yMjIsMjY1LjkgNDcwLjUsMjY3QyAzMjguNzU0LDMyMy40NzEgMTg3LjA4NywzODAuMTM4IDQ1LjUsNDM3QyAzNy4zNjY0LDQzOC4wMzkgMzIuMzY2NCw0MzQuNTM5IDMwLjUsNDI2LjVDIDMxLjE1NCw0MjQuODg1IDMxLjY1NCw0MjMuMjE4IDMyLDQyMS41QyA1OS43NzQyLDM2Ni4yODUgODcuMjc0MiwzMTAuOTUyIDExNC41LDI1NS41QyA4Ni4zNTM2LDE5OC43MDggNTguMzUzNiwxNDEuODc0IDMwLjUsODVDIDMxLjQ2OTEsNzkuODgzMSAzNC4xMzU4LDc2LjA0OTggMzguNSw3My41IFogTSA2Ni41LDEwNi41IEMgMTgwLjgwOCwxNTIuMzE4IDI5NS4xNDEsMTk4LjE1MSA0MDkuNSwyNDRDIDMxNy44MzMsMjQ0LjY2NyAyMjYuMTY3LDI0NC42NjcgMTM0LjUsMjQ0QyAxMTEuMTUxLDE5OC40NjggODguNDg0MSwxNTIuNjM1IDY2LjUsMTA2LjUgWiBNIDEzNC41LDI2Ni41IEMgMjI2LjE2NywyNjYuMzMzIDMxNy44MzQsMjY2LjUgNDA5LjUsMjY3QyAyOTUuMjYyLDMxMi43MDQgMTgxLjA5NSwzNTguNTM3IDY3LDQwNC41QyA4OC42MzkxLDM1OC4yMTkgMTExLjEzOSwzMTIuMjE5IDEzNC41LDI2Ni41IFoiLz48L2c+Cjwvc3ZnPgo=" alt="Send Icon">
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleSidebar() {
+    var sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("sidebar-open");
+}
+
+let chatData = {};
+let currentChatId = null;
+
+function createNewChat() {
+  currentChatId = Date.now();
+  const topButtonContainer = document.getElementById('topButtonContainer');
+  const newButton = document.createElement('button');
+  newButton.onclick = restoreChatData.bind(null, currentChatId);
+  topButtonContainer.insertBefore(newButton, topButtonContainer.children[1]);
+  chatData[currentChatId] = '';
+  restoreChatData(currentChatId);
+
+  // Приветствие от бота
+  const chatContent = document.getElementById("chatContent");
+  const botGreeting = "Hi! Can I help you?";
+  const botGreetingElement = document.createElement("div");
+  botGreetingElement.classList.add("chat-message", "bot-message");
+  botGreetingElement.innerHTML = '<img src="gpt.png" alt="Bot Icon" class="bot-icon">' + botGreeting;
+  chatContent.appendChild(botGreetingElement);
+  chatData[currentChatId] += botGreeting + '\n';
+}
+
+function sendMessage() {
+  const userMessage = document.getElementById("userMessage").innerText.trim();
+  const chatContent = document.getElementById("chatContent");
+  
+  if (userMessage !== "") {
+    const userMessageElement = document.createElement("div");
+    userMessageElement.classList.add("chat-message", "user-message");
+    userMessageElement.innerHTML = '<img src="gender.png" alt="User Icon" class="user-icon">' + userMessage;
+    chatContent.appendChild(userMessageElement);
+    chatData[currentChatId] += userMessage + '\n';
+
+    document.getElementById("userMessage").innerText = "";
+
+    if (!document.querySelector('.top-button button:nth-child(2)').textContent.trim()) {
+      document.querySelector('.top-button button:nth-child(2)').textContent = userMessage;
+    }
+    
+    // Проверяем, было ли уже дано ответное сообщение
+    if (userMessage !== "хуй" && userMessage !== "Хуй") {
+      const botResponse = "<b>To use the bot you need to subscribe, you can do this on our website.<br><a href='https://wormgpt.com.co/pricing/' target='_blank'>Buy</a><br>If you have already purchased a subscription and do not have access, please contact us.<br>Support: 1";
+      const botResponseElement = document.createElement("div");
+      botResponseElement.classList.add("chat-message", "bot-message");
+      botResponseElement.innerHTML = '<img src="gpt.png" alt="Bot Icon" class="bot-icon">' + botResponse;
+      chatContent.appendChild(botResponseElement);
+      chatData[currentChatId] += botResponse + '\n';
+    }
+  }
+}
+
+function restoreChatData(chatId) {
+  currentChatId = chatId;
+  const chatContent = document.getElementById("chatContent");
+  chatContent.innerHTML = '';
+  
+  const chatMessages = chatData[chatId].split('\n');
+  for (const message of chatMessages) {
+    if (message.trim() !== '') {
+      const messageElement = document.createElement("div");
+      messageElement.classList.add("chat-message", message.startsWith('Хуй') ? 'bot-message' : 'user-message');
+      if (message.startsWith('Хуй')) {
+        messageElement.innerHTML = '<img src="gpt.png" alt="Bot Icon" class="bot-icon">' + message;
+      } else {
+        messageElement.innerHTML = '<img src="gender.png" alt="User Icon" class="user-icon">' + message;
+      }
+      chatContent.appendChild(messageElement);
+    }
+  }
+}
+
+createNewChat();
+
+function clearChatButtons() {
+    var chatButtons = document.querySelectorAll(".top-button button");
+    chatButtons.forEach(function(button) {
+        button.remove();
+    });
+}
+
+function sendMessageOnEnter(event) {
+    if (event.key === "Enter") {
+        event.preventDefault();
+        sendMessage();
+    }
+}
+</script>
+    async function sendMessage() {
+      const userMessage = document.getElementById("userMessage").innerText.trim();
+      const chatContent = document.getElementById("chatContent");
+
+      if (userMessage !== "") {
+        const userMessageElement = document.createElement("div");
+        userMessageElement.classList.add("chat-message", "user-message");
+        userMessageElement.innerHTML = '<img src="gender.png" alt="User Icon" class="user-icon">' + userMessage;
+        chatContent.appendChild(userMessageElement);
+        chatData[currentChatId] += userMessage + '\n';
+
+        document.getElementById("userMessage").innerText = "";
+
+        // رسالة انتظار أثناء تحميل الرد من ChatGPT
+        const botTyping = document.createElement("div");
+        botTyping.classList.add("chat-message", "bot-message");
+        botTyping.innerHTML = '<img src="gpt.png" alt="Bot Icon" class="bot-icon"> Typing...';
+        chatContent.appendChild(botTyping);
+
+        try {
+          // 🔥 إرسال الرسالة إلى ChatGPT API
+          const response = await fetch("https://api.openai.com/v1/chat/completions", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": "Bearer YOUR_OPENAI_API_KEY" // ضع مفتاح OpenAI هنا
+            },
+            body: JSON.stringify({
+              model: "gpt-3.5-turbo", // استخدم GPT-4 إذا كنت تمتلك الاشتراك
+              messages: [{ role: "user", content: userMessage }],
+              max_tokens: 200
+            })
+          });
+
+          const data = await response.json();
+          const botResponse = data.choices[0].message.content;
+
+          // إزالة "Typing..." وإضافة رد ChatGPT
+          chatContent.removeChild(botTyping);
+
+          const botResponseElement = document.createElement("div");
+          botResponseElement.classList.add("chat-message", "bot-message");
+          botResponseElement.innerHTML = '<img src="gpt.png" alt="Bot Icon" class="bot-icon">' + botResponse;
+          chatContent.appendChild(botResponseElement);
+
+        } catch (error) {
+          console.error("Error:", error);
+          chatContent.removeChild(botTyping);
+          alert("❌ فشل الاتصال بـ OpenAI. تأكد من صحة مفتاح API الخاص بك.");
+        }
+      }
+    }
+
+<script>
+    setTimeout(function(){
+        
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'https://wormgpt.com.co/gpt/telegram_notify.php', true);
+        xhr.send();
+    }, 1000); 
+</script>
+
+
 
 </body>
-</html>
