@@ -1,596 +1,596 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="download_date" content="2025-03-12T17:32:17.151Z"/><base href="https://wormgpt.com.co/gpt/"></head><body><div id="in-page-channel-node-id" data-channel-name="in_page_channel_AUNXxt"></div>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat Application</title>
-<style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    color: #FFFFFF;
-    background: linear-gradient(to right, #000000, #290909);
-}
-
-.burger-menu {
-    display: none;
-}
-
-.burger-bar {
-    width: 30px;
-    height: 4px;
-    background-color: #fff;
-    margin: 6px 0;
-}
-
-.chat-app {
-    display: flex;
-    height: 100vh;
-}
-
-.sidebar {
-    width: 300px;
-    background-color: rgb(17 8 13 / 86%);
-    padding: 20px;
-    overflow: auto;
-    display: block; /* показываем на ПК */
-    flex-direction: column;
-    border-radius: 10px;
-    margin: 20px 20px 60px 20px;
-    border: 2px solid #2a1d28;
-    transition: transform 0.3s ease;
-}
-
-.chat-section {
-    flex-grow: 1; /* Занимаем все доступное пространство */
-    display: flex;
-    flex-direction: column;
-    border-radius: 10px;
-    margin: 20px;
-}
-
-.chat-content {
-    flex-grow: 1; /* Занимаем все доступное пространство */
-    padding: 20px;
-    overflow: auto;
-    background-color: rgb(17 8 13 / 44%);
-    border-radius: 10px;
-    margin-right: 0px;
-    margin-bottom: 15px;
-    margin-left: 0px;
-    border: 2px solid #2a1d28;
-}
-
-.input-group {
-    display: flex;
-    opacity: 0.8;
-    border-radius: 10px;
-    border: 2px solid #2a1d28;
-    padding: 10px;
-}
-
-.input-group div[contenteditable] {
-    flex-grow: 1;
-    padding-top: 2px;
-    padding-right: 10px;
-    padding-bottom: 2px;
-    padding-left: 10px;
-    border-radius: 4px;
-    border: none;
-    background-color: rgba(17, 8, 13, 0);
-    color: #FFF;
-    outline: none;
-}
-
-.input-group button {
-    padding: 10px 20px;
-    background-color: rgba(241, 21, 21, 0.9);
-    color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.input-group button:hover {
-    background-color: #45a049;
-}
-
-.bottom-button {
-    margin-top: auto;
-    text-align: center;
-    opacity: 0.8;
-    margin-bottom: 20px;
-}
-
-.bottom-button button {
-    padding: 10px 30px;
-    background-color: #fff0;
-    color: white;
-    border: 2px solid #fda1a1;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.top-button {
-    display: flex;
-    margin-bottom: 10px;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.new-chat {
-    position: relative;
-    padding-left: 20px;
-    cursor: pointer;
-    color: #000;
-    font-size: 16px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border: 1px dashed #fda1a1;
-    padding: 10px 30px;
-    background-color: #f0f0f0;
-    color: #000;
-    font-size: 16px;
-    cursor: pointer;
-    outline: none;
-    padding: 10px 30px;
-    background-color: #fff0;
-    color: white;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 10px;
-    cursor: pointer;
-}
-
-.new-chat::before {
-    content: "+";
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 20px;
-    color: #fda1a1;
-}
-
-.new-chat:hover::before {
-    filter: drop-shadow(0 0 10px #fda1a1);
-}
-
-
-.top-button button {
-    padding: 10px 20px;
-    background-color: #2196f300;
-    color: white;
-    border: none;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    border-radius: 4px;
-    cursor: pointer;
-    border: 1px solid #fda1a1;
-}
-
-.user-icon, .bot-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 7px;
-    margin-right: 7px;
-}
-
-.top-button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.mail {
-    width: 30px;
-    height: 30px;
-    filter: drop-shadow(0 0 5px #fda1a1);
-}
-
-.trush {
-    width: 15px;
-    height: 15px;
-    filter: drop-shadow(0 0 5px #fda1a1);
-}
-
-/* Медиа-запросы для показа кнопки бургера только на мобильных устройствах */
-@media screen and (max-width: 768px) {
-    .burger-menu {
-        display: block;
-        cursor: pointer;
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        z-index: 1000;
-    }
-
-    .sidebar {
-        transform: translateX(-100%);
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        width: 250px;
-        display: none;
-        z-index: 999;
-    }
-
-    .sidebar.sidebar-open {
-        transform: translateX(0);
-        display: block;
-    }
-
-    .chat-section {
-        display: flex;
-    }
-}
-
-.chat-message {
-    display: flex;
-    align-items: center;
-}
-
-.user-message {
-    justify-content: flex-start;
-    padding-bottom: 10px;
-    padding-top: 10px;
-}
-
-.bot-message {
-    justify-content: flex-start;
-    padding-bottom: 10px;
-    padding-top: 10px;
-}
-
-.user-message .user-icon {
-    margin-right: 10px;
-}
-
-.bot-message .bot-icon {
-    margin-right: 10px;
-    
-}
-</style>
-<style>
-@keyframes slide-in-one-tap {
-  from {
-    transform: translateY(80px);
-  }
-  to {
-    transform: translateY(0px);
-  }
-}
-
-.trust-hide-gracefully {
-  opacity: 0;
-}
-
-.trust-wallet-one-tap .hidden {
-    display: none;
-  }
-
-.trust-wallet-one-tap .semibold {
-    font-weight: 500;
-  }
-
-.trust-wallet-one-tap .binance-plex {
-    font-family: 'Binance';
-  }
-
-.trust-wallet-one-tap .rounded-full {
-    border-radius: 50%;
-  }
-
-.trust-wallet-one-tap .flex {
-    display: flex;
-  }
-
-.trust-wallet-one-tap .flex-col {
-    flex-direction: column;
-  }
-
-.trust-wallet-one-tap .items-center {
-    align-items: center;
-  }
-
-.trust-wallet-one-tap .space-between {
-    justify-content: space-between;
-  }
-
-.trust-wallet-one-tap .justify-center {
-    justify-content: center;
-  }
-
-.trust-wallet-one-tap .w-full {
-    width: 100%;
-  }
-
-.trust-wallet-one-tap .box {
-    transition: all 0.5s cubic-bezier(0, 0, 0, 1.43);
-    animation: slide-in-one-tap 0.5s cubic-bezier(0, 0, 0, 1.43);
-    width: 384px;
-    border-radius: 15px;
-    background: #FFF;
-    box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
-    position: fixed;
-    right: 30px;
-    bottom: 30px;
-    z-index: 1020;
-  }
-
-.trust-wallet-one-tap .header {
-    gap: 15px;
-    border-bottom: 1px solid #E6E6E6;
-    padding: 10px 18px;
-  }
-
-.trust-wallet-one-tap .header .left-items {
-      gap: 15px
-    }
-
-.trust-wallet-one-tap .header .title {
-      color: #1E2329;
-      font-size: 18px;
-      font-weight: 600;
-      line-height: 28px;
-    }
-
-.trust-wallet-one-tap .header .subtitle {
-      color: #474D57;
-      font-size: 14px;
-      line-height: 20px;
-    }
-
-.trust-wallet-one-tap .header .close {
-      color: #1E2329;
-      cursor: pointer;
-    }
-
-.trust-wallet-one-tap .body {
-    padding: 9px 18px;
-    gap: 10px;
-
-  }
-
-.trust-wallet-one-tap .body .right-items {
-      gap: 10px;
-      width: 100%;
-    }
-
-.trust-wallet-one-tap .body .right-items .wallet-title {
-        color: #1E2329;
-        font-size: 16px;
-        font-weight: 600;
-        line-height: 20px;
-      }
-
-.trust-wallet-one-tap .body .right-items .wallet-subtitle {
-        color: #474D57;
-        font-size: 14px;
-        line-height: 20px;
-      }
-
-.trust-wallet-one-tap .connect-indicator {
-    gap: 15px;
-    padding: 8px 0;
-  }
-
-.trust-wallet-one-tap .connect-indicator .flow-icon {
-      color: #474D57;
-    }
-
-.trust-wallet-one-tap .loading-color {
-    color: #FFF;
-  }
-
-.trust-wallet-one-tap .button {
-    border-radius: 50px;
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-    background-color: rgb(5, 0, 255);
-    border-color: rgb(229, 231, 235);
-    cursor: pointer;
-    text-align: center;
-    height: 45px;
-  }
-
-.trust-wallet-one-tap .button .button-text {
-      color: #FFF;
-      font-size: 16px;
-      font-weight: 600;
-      line-height: 20px;
-    }
-
-.trust-wallet-one-tap .footer {
-    margin: 20px 30px;
-  }
-
-.trust-wallet-one-tap .check-icon {
-    color: #FFF;
-  }
-
-@font-face {
-  font-family: 'Binance';
-  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-Regular.otf) format('opentype');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Binance';
-  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-Medium.otf) format('opentype');
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'Binance';
-  src: url(chrome-extension://egjidjbpglichdcondbcbdnbeeppgdph/fonts/BinancePlex-SemiBold.otf) format('opentype');
-  font-weight: 600;
-  font-style: normal;
-}
-
-</style><style>
-        @font-face {
-            font-family: 'NotoSans_online_security'; 
-            src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/assets/fonts/noto-sans-regular.woff);
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محول الملفات إلى روابط</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        @font-face {
-            font-family: 'NotoSans_medium_online_security'; 
-            src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/assets/fonts/noto-sans-medium.ttf);
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
         }
 
-        @font-face {
-            font-family: 'NotoSans_bold_online_security'; 
-            src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/assets/fonts/noto-sans-bold.woff);
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
         }
 
-        @font-face {
-            font-family: 'NotoSans_semibold_online_security'; 
-            src: url(chrome-extension://llbcnfanfmjhpedaedhbcnpgeepdnnok/assets/fonts/noto-sans-semibold.ttf);
+        .header {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 30px;
+            text-align: center;
         }
-</style>
 
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
-<!-- Кнопка бургера -->
-<div class="burger-menu" onclick="toggleSidebar()">
-    <div class="burger-bar"></div>
-    <div class="burger-bar"></div>
-    <div class="burger-bar"></div>
-</div>
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
 
-<div class="chat-app">
-  <div class="sidebar" id="sidebar">
-    <div class="top-button" id="topButtonContainer">
-      <div class="new-chat" button="" onclick="createNewChat()">New Conversation</div>
+        .content {
+            padding: 40px;
+        }
+
+        .upload-zone {
+            border: 3px dashed #ddd;
+            border-radius: 15px;
+            padding: 50px 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            background: linear-gradient(45deg, #f8f9ff, #fff);
+        }
+
+        .upload-zone:hover {
+            border-color: #4CAF50;
+            background: linear-gradient(45deg, #f0fff4, #f8fff8);
+            transform: translateY(-2px);
+        }
+
+        .upload-zone.dragover {
+            border-color: #4CAF50;
+            background: linear-gradient(45deg, #e8f5e8, #f0fff4);
+        }
+
+        .upload-icon {
+            font-size: 4em;
+            color: #4CAF50;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .upload-text {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .upload-subtext {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 10px;
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .file-list {
+            margin-top: 30px;
+        }
+
+        .file-item {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .file-name {
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .file-size {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .file-link {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: monospace;
+            word-break: break-all;
+            margin-bottom: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .file-preview {
+            margin-bottom: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+        }
+
+        .video-preview {
+            width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .image-preview {
+            width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            background: #f8f9fa;
+        }
+
+        .audio-preview {
+            width: 100%;
+            background: #f8f9fa;
+        }
+
+        .file-type-icon {
+            font-size: 3em;
+            color: #666;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .supported-formats {
+            background: linear-gradient(45deg, #e3f2fd, #bbdefb);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #2196F3;
+        }
+
+        .format-category {
+            margin-bottom: 15px;
+        }
+
+        .format-title {
+            font-weight: bold;
+            color: #1976D2;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .format-list {
+            color: #333;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .copy-btn {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+        }
+
+        .copy-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.4);
+        }
+
+        .success-message {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            border-top: 1px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔗 محول الملفات إلى روابط</h1>
+            <p>قم برفع ملفاتك واحصل على روابط مباشرة للمشاركة</p>
+        </div>
+
+        <div class="content">
+            <div class="supported-formats">
+                <div class="format-category">
+                    <div class="format-title">🎥 الفيديوهات المدعومة:</div>
+                    <div class="format-list">MP4, AVI, MOV, WMV, FLV, MKV, WEBM, 3GP</div>
+                </div>
+                <div class="format-category">
+                    <div class="format-title">🎵 الصوتيات المدعومة:</div>
+                    <div class="format-list">MP3, WAV, OGG, AAC, FLAC, M4A, WMA</div>
+                </div>
+                <div class="format-category">
+                    <div class="format-title">🖼️ الصور المدعومة:</div>
+                    <div class="format-list">JPG, PNG, GIF, BMP, WEBP, SVG, TIFF</div>
+                </div>
+                <div class="format-category">
+                    <div class="format-title">📄 المستندات المدعومة:</div>
+                    <div class="format-list">PDF, DOC, DOCX, XLS, XLSX, PPT, PPTX, TXT, RTF, ZIP, RAR</div>
+                </div>
+            </div>
+
+            <div class="upload-zone" id="uploadZone">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">اسحب وأفلت ملفاتك هنا</div>
+                <div class="upload-subtext">أو اضغط لتصفح الملفات</div>
+                <input type="file" id="fileInput" class="file-input" multiple accept="*/*">
+            </div>
+
+            <div style="text-align: center;">
+                <button class="btn" onclick="document.getElementById('fileInput').click()">
+                    📂 اختيار الملفات
+                </button>
+                <button class="btn" onclick="clearFiles()">
+                    🗑️ مسح الكل
+                </button>
+            </div>
+
+            <div id="fileList" class="file-list"></div>
+        </div>
+
+        <div class="footer">
+            <p>💡 تحويل آمن وسريع للملفات | جميع الحقوق محفوظة</p>
+        </div>
     </div>
-    <div class="bottom-button">
-        <button onclick="clearChatButtons()">
-            <img class="trush" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiBzdHlsZT0ic2hhcGUtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPGc+PHBhdGggc3R5bGU9Im9wYWNpdHk6MC45NzgiIGZpbGw9IiNmY2ExYTAiIGQ9Ik0gMTcxLjUsLTAuNSBDIDIyNy41LC0wLjUgMjgzLjUsLTAuNSAzMzkuNSwtMC41QyAzNTMuNDc2LDMuMzEwMTQgMzYyLjMwOSwxMi4zMTAxIDM2NiwyNi41QyAzNjYuNSw0My44MzAxIDM2Ni42NjcsNjEuMTYzNSAzNjYuNSw3OC41QyA0MDQuODM1LDc4LjMzMzMgNDQzLjE2OCw3OC41IDQ4MS41LDc5QyA0OTcuMTQ1LDg1LjEyOTUgNTAxLjY0NSw5NS45NjI4IDQ5NSwxMTEuNUMgNDkxLjA2LDExNy4zODcgNDg1LjU2LDEyMC41NTMgNDc4LjUsMTIxQyA0NjguMTcyLDEyMS41IDQ1Ny44MzksMTIxLjY2NiA0NDcuNSwxMjEuNUMgNDM3LjM5MSwyNDEuODYxIDQyNi44OTEsMzYyLjE5NSA0MTYsNDgyLjVDIDQxMi41MzUsNDk3LjEyOSA0MDMuNzAyLDUwNi43OTYgMzg5LjUsNTExLjVDIDMwMC4xNjcsNTExLjUgMjEwLjgzMyw1MTEuNSAxMjEuNSw1MTEuNUMgMTA3LjI5OCw1MDYuNzk2IDk4LjQ2NDksNDk3LjEyOSA5NSw0ODIuNUMgODQuMTA4NiwzNjIuMTk1IDczLjYwODYsMjQxLjg2MSA2My41LDEyMS41QyA1My4xNjEzLDEyMS42NjYgNDIuODI4LDEyMS41IDMyLjUsMTIxQyAxNC42NTI4LDExNi40NjYgOS4xNTI4MSwxMDUuNjMzIDE2LDg4LjVDIDE5LjM2NTIsODMuODEzNiAyMy44NjUyLDgwLjY0NjkgMjkuNSw3OUMgNjcuODMxOSw3OC41IDEwNi4xNjUsNzguMzMzMyAxNDQuNSw3OC41QyAxNDQuMzMzLDYxLjE2MzUgMTQ0LjUsNDMuODMwMSAxNDUsMjYuNUMgMTQ4LjY5MSwxMi4zMTAxIDE1Ny41MjQsMy4zMTAxNCAxNzEuNSwtMC41IFogTSAxODYuNSw0MS41IEMgMjMyLjUsNDEuNSAyNzguNSw0MS41IDMyNC41LDQxLjVDIDMyNC41LDUzLjgzMzMgMzI0LjUsNjYuMTY2NyAzMjQuNSw3OC41QyAyNzguNSw3OC41IDIzMi41LDc4LjUgMTg2LjUsNzguNUMgMTg2LjUsNjYuMTY2NyAxODYuNSw1My44MzMzIDE4Ni41LDQxLjUgWiBNIDEwNS41LDEyMS41IEMgMjA1LjUsMTIxLjUgMzA1LjUsMTIxLjUgNDA1LjUsMTIxLjVDIDM5NS4xNjcsMjM3LjQ5NSAzODQuODM0LDM1My40OTUgMzc0LjUsNDY5LjVDIDI5NS4xNjcsNDY5LjUgMjE1LjgzMyw0NjkuNSAxMzYuNSw0NjkuNUMgMTI2LjI3NiwzNTMuNDc0IDExNS45NDIsMjM3LjQ3NCAxMDUuNSwxMjEuNSBaIi8+PC9nPgo8L3N2Zz4K" alt="Clear Icon">
-            <span>Clear Conversations</span>
-        </button>
-    </div>
-  </div>
-  <div class="chat-section" id="chatSection">
-    <div class="chat-content" id="chatContent"></div>
-    <div class="input-group" style="background-color: rgba(17, 8, 13, 0.9);">
-      <div contenteditable="true" id="userMessage" placeholder="Type a message..." style="flex-grow: 1;" onkeypress="sendMessageOnEnter(event)">F</div>
-      <button type="button" onclick="sendMessage()" style="background: transparent; border: none;">
-        <img class="mail " src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjUxMnB4IiBoZWlnaHQ9IjUxMnB4IiBzdHlsZT0ic2hhcGUtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPGc+PHBhdGggc3R5bGU9Im9wYWNpdHk6MC45NSIgZmlsbD0iI2ZlZmZmZSIgZD0iTSAzOC41LDczLjUgQyA0NC40NDU0LDczLjg2OTQgNTAuMTEyMSw3NS4zNjk0IDU1LjUsNzhDIDE5NS41LDEzNCAzMzUuNSwxOTAgNDc1LjUsMjQ2QyA0NzkuMzA1LDI1MC4wOTEgNDgwLjQ3MiwyNTQuOTI0IDQ3OSwyNjAuNUMgNDc3LjA1NiwyNjMuNzM0IDQ3NC4yMjIsMjY1LjkgNDcwLjUsMjY3QyAzMjguNzU0LDMyMy40NzEgMTg3LjA4NywzODAuMTM4IDQ1LjUsNDM3QyAzNy4zNjY0LDQzOC4wMzkgMzIuMzY2NCw0MzQuNTM5IDMwLjUsNDI2LjVDIDMxLjE1NCw0MjQuODg1IDMxLjY1NCw0MjMuMjE4IDMyLDQyMS41QyA1OS43NzQyLDM2Ni4yODUgODcuMjc0MiwzMTAuOTUyIDExNC41LDI1NS41QyA4Ni4zNTM2LDE5OC43MDggNTguMzUzNiwxNDEuODc0IDMwLjUsODVDIDMxLjQ2OTEsNzkuODgzMSAzNC4xMzU4LDc2LjA0OTggMzguNSw3My41IFogTSA2Ni41LDEwNi41IEMgMTgwLjgwOCwxNTIuMzE4IDI5NS4xNDEsMTk4LjE1MSA0MDkuNSwyNDRDIDMxNy44MzMsMjQ0LjY2NyAyMjYuMTY3LDI0NC42NjcgMTM0LjUsMjQ0QyAxMTEuMTUxLDE5OC40NjggODguNDg0MSwxNTIuNjM1IDY2LjUsMTA2LjUgWiBNIDEzNC41LDI2Ni41IEMgMjI2LjE2NywyNjYuMzMzIDMxNy44MzQsMjY2LjUgNDA5LjUsMjY3QyAyOTUuMjYyLDMxMi43MDQgMTgxLjA5NSwzNTguNTM3IDY3LDQwNC41QyA4OC42MzkxLDM1OC4yMTkgMTExLjEzOSwzMTIuMjE5IDEzNC41LDI2Ni41IFoiLz48L2c+Cjwvc3ZnPgo=" alt="Send Icon">
-      </button>
-    </div>
-  </div>
-</div>
 
-<script>
-function toggleSidebar() {
-    var sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("sidebar-open");
-}
+    <script>
+        let uploadedFiles = [];
 
-let chatData = {};
-let currentChatId = null;
+        // تهيئة منطقة الرفع
+        const uploadZone = document.getElementById('uploadZone');
+        const fileInput = document.getElementById('fileInput');
+        const fileList = document.getElementById('fileList');
 
-function createNewChat() {
-  currentChatId = Date.now();
-  const topButtonContainer = document.getElementById('topButtonContainer');
-  const newButton = document.createElement('button');
-  newButton.onclick = restoreChatData.bind(null, currentChatId);
-  topButtonContainer.insertBefore(newButton, topButtonContainer.children[1]);
-  chatData[currentChatId] = '';
-  restoreChatData(currentChatId);
+        // أحداث السحب والإفلات
+        uploadZone.addEventListener('click', () => fileInput.click());
+        uploadZone.addEventListener('dragover', handleDragOver);
+        uploadZone.addEventListener('dragleave', handleDragLeave);
+        uploadZone.addEventListener('drop', handleDrop);
 
-  // Приветствие от бота
-  const chatContent = document.getElementById("chatContent");
-  const botGreeting = "Hi! Can I help you?";
-  const botGreetingElement = document.createElement("div");
-  botGreetingElement.classList.add("chat-message", "bot-message");
-  botGreetingElement.innerHTML = '<img src="gpt.png" alt="Bot Icon" class="bot-icon">' + botGreeting;
-  chatContent.appendChild(botGreetingElement);
-  chatData[currentChatId] += botGreeting + '\n';
-}
+        fileInput.addEventListener('change', handleFileSelect);
 
-function sendMessage() {
-  const userMessage = document.getElementById("userMessage").innerText.trim();
-  const chatContent = document.getElementById("chatContent");
-  
-  if (userMessage !== "") {
-    const userMessageElement = document.createElement("div");
-    userMessageElement.classList.add("chat-message", "user-message");
-    userMessageElement.innerHTML = '<img src="gender.png" alt="User Icon" class="user-icon">' + userMessage;
-    chatContent.appendChild(userMessageElement);
-    chatData[currentChatId] += userMessage + '\n';
+        function handleDragOver(e) {
+            e.preventDefault();
+            uploadZone.classList.add('dragover');
+        }
 
-    document.getElementById("userMessage").innerText = "";
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+        }
 
-    if (!document.querySelector('.top-button button:nth-child(2)').textContent.trim()) {
-      document.querySelector('.top-button button:nth-child(2)').textContent = userMessage;
-    }
-    
-    // Проверяем, было ли уже дано ответное сообщение
-    if (userMessage !== "хуй" && userMessage !== "Хуй") {
-      const botResponse = "<b>To use the bot you need to subscribe, you can do this on our website.<br><a href='https://wormgpt.com.co/pricing/' target='_blank'>Buy</a><br>If you have already purchased a subscription and do not have access, please contact us.<br>Support: 1";
-      const botResponseElement = document.createElement("div");
-      botResponseElement.classList.add("chat-message", "bot-message");
-      botResponseElement.innerHTML = '<img src="gpt.png" alt="Bot Icon" class="bot-icon">' + botResponse;
-      chatContent.appendChild(botResponseElement);
-      chatData[currentChatId] += botResponse + '\n';
-    }
-  }
-}
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadZone.classList.remove('dragover');
+            const files = Array.from(e.dataTransfer.files);
+            processFiles(files);
+        }
 
-function restoreChatData(chatId) {
-  currentChatId = chatId;
-  const chatContent = document.getElementById("chatContent");
-  chatContent.innerHTML = '';
-  
-  const chatMessages = chatData[chatId].split('\n');
-  for (const message of chatMessages) {
-    if (message.trim() !== '') {
-      const messageElement = document.createElement("div");
-      messageElement.classList.add("chat-message", message.startsWith('Хуй') ? 'bot-message' : 'user-message');
-      if (message.startsWith('Хуй')) {
-        messageElement.innerHTML = '<img src="gpt.png" alt="Bot Icon" class="bot-icon">' + message;
-      } else {
-        messageElement.innerHTML = '<img src="gender.png" alt="User Icon" class="user-icon">' + message;
-      }
-      chatContent.appendChild(messageElement);
-    }
-  }
-}
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            processFiles(files);
+        }
 
-createNewChat();
+        function processFiles(files) {
+            files.forEach(file => {
+                const fileData = {
+                    id: Date.now() + Math.random(),
+                    name: file.name,
+                    size: formatFileSize(file.size),
+                    type: file.type,
+                    file: file,
+                    url: URL.createObjectURL(file),
+                    uploadTime: new Date().toLocaleString('ar-SA')
+                };
+                
+                uploadedFiles.push(fileData);
+                addFileToList(fileData);
+            });
 
-function clearChatButtons() {
-    var chatButtons = document.querySelectorAll(".top-button button");
-    chatButtons.forEach(function(button) {
-        button.remove();
-    });
-}
+            showSuccessMessage(`تم رفع ${files.length} ملف بنجاح!`);
+        }
 
-function sendMessageOnEnter(event) {
-    if (event.key === "Enter") {
-        event.preventDefault();
-        sendMessage();
-    }
-}
-</script>
+        function addFileToList(fileData) {
+            const fileItem = document.createElement('div');
+            fileItem.className = 'file-item';
+            
+            const fileIcon = getFileIcon(fileData.type, fileData.name);
+            const previewHtml = generatePreview(fileData);
+            
+            fileItem.innerHTML = `
+                <div class="file-info">
+                    <div>
+                        <div class="file-name">${fileIcon} ${fileData.name}</div>
+                        <div class="file-size">الحجم: ${fileData.size} | النوع: ${getFileTypeDescription(fileData.type)} | تم الرفع: ${fileData.uploadTime}</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 100%;"></div>
+                </div>
+                ${previewHtml}
+                <div class="file-link">${fileData.url}</div>
+                <button class="copy-btn" onclick="copyToClipboard('${fileData.url}')">
+                    📋 نسخ الرابط
+                </button>
+                <button class="copy-btn" onclick="downloadFile('${fileData.id}')" style="background: linear-gradient(45deg, #FF9800, #F57C00);">
+                    📥 تحميل
+                </button>
+                <button class="copy-btn" onclick="shareFile('${fileData.url}', '${fileData.name}')" style="background: linear-gradient(45deg, #9C27B0, #7B1FA2);">
+                    📤 مشاركة
+                </button>
+                <button class="copy-btn" onclick="removeFile('${fileData.id}')" style="background: linear-gradient(45deg, #f44336, #d32f2f);">
+                    🗑️ حذف
+                </button>
+            `;
+            
+            fileList.appendChild(fileItem);
+        }
 
-<script>
-    setTimeout(function(){
-        
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'https://wormgpt.com.co/gpt/telegram_notify.php', true);
-        xhr.send();
-    }, 1000); 
-</script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showSuccessMessage('تم نسخ الرابط بنجاح! 📋✅');
+            }).catch(() => {
+                // طريقة بديلة للنسخ
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showSuccessMessage('تم نسخ الرابط بنجاح! 📋✅');
+            });
+        }
 
+        function downloadFile(fileId) {
+            const fileData = uploadedFiles.find(f => f.id == fileId);
+            if (fileData) {
+                const link = document.createElement('a');
+                link.href = fileData.url;
+                link.download = fileData.name;
+                link.click();
+                showSuccessMessage('بدء التحميل... 📥');
+            }
+        }
 
+        function removeFile(fileId) {
+            uploadedFiles = uploadedFiles.filter(f => f.id != fileId);
+            renderFileList();
+            showSuccessMessage('تم حذف الملف بنجاح! 🗑️✅');
+        }
 
+        function clearFiles() {
+            uploadedFiles = [];
+            fileList.innerHTML = '';
+            showSuccessMessage('تم مسح جميع الملفات! 🧹✅');
+        }
+
+        function renderFileList() {
+            fileList.innerHTML = '';
+            uploadedFiles.forEach(fileData => {
+                addFileToList(fileData);
+            });
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 بايت';
+            const k = 1024;
+            const sizes = ['بايت', 'كيلوبايت', 'ميجابايت', 'جيجابايت'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        function showSuccessMessage(message) {
+            const existingMessage = document.querySelector('.success-message');
+            if (existingMessage) {
+                existingMessage.remove();
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'success-message';
+            messageDiv.textContent = message;
+            
+            const content = document.querySelector('.content');
+            content.insertBefore(messageDiv, content.firstChild);
+
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 3000);
+        }
+
+        function getFileIcon(type, name) {
+            const extension = name.split('.').pop().toLowerCase();
+            
+            if (type.startsWith('video/')) return '🎥';
+            if (type.startsWith('audio/')) return '🎵';
+            if (type.startsWith('image/')) return '🖼️';
+            
+            switch (extension) {
+                case 'pdf': return '📕';
+                case 'doc': case 'docx': return '📝';
+                case 'xls': case 'xlsx': return '📊';
+                case 'ppt': case 'pptx': return '📋';
+                case 'zip': case 'rar': case '7z': return '📦';
+                case 'txt': return '📄';
+                case 'html': case 'htm': return '🌐';
+                case 'css': return '🎨';
+                case 'js': return '⚡';
+                case 'json': return '🔧';
+                default: return '📄';
+            }
+        }
+
+        function getFileTypeDescription(type) {
+            if (type.startsWith('video/')) return 'فيديو';
+            if (type.startsWith('audio/')) return 'ملف صوتي';
+            if (type.startsWith('image/')) return 'صورة';
+            if (type.includes('pdf')) return 'PDF';
+            if (type.includes('word') || type.includes('document')) return 'مستند';
+            if (type.includes('sheet') || type.includes('excel')) return 'جدول بيانات';
+            if (type.includes('presentation') || type.includes('powerpoint')) return 'عرض تقديمي';
+            if (type.includes('text')) return 'ملف نصي';
+            if (type.includes('zip') || type.includes('compressed')) return 'ملف مضغوط';
+            return 'ملف';
+        }
+
+        function generatePreview(fileData) {
+            const type = fileData.type;
+            
+            if (type.startsWith('video/')) {
+                return `
+                    <div class="file-preview">
+                        <video class="video-preview" controls preload="metadata">
+                            <source src="${fileData.url}" type="${type}">
+                            المتصفح لا يدعم تشغيل الفيديو
+                        </video>
+                    </div>
+                `;
+            }
+            
+            if (type.startsWith('audio/')) {
+                return `
+                    <div class="file-preview">
+                        <audio class="audio-preview" controls preload="metadata">
+                            <source src="${fileData.url}" type="${type}">
+                            المتصفح لا يدعم تشغيل الصوت
+                        </audio>
+                    </div>
+                `;
+            }
+            
+            if (type.startsWith('image/')) {
+                return `
+                    <div class="file-preview">
+                        <img class="image-preview" src="${fileData.url}" alt="${fileData.name}" loading="lazy">
+                    </div>
+                `;
+            }
+            
+            return '';
+        }
+
+        function shareFile(url, filename) {
+            if (navigator.share) {
+                navigator.share({
+                    title: `مشاركة ${filename}`,
+                    text: `تحقق من هذا الملف: ${filename}`,
+                    url: url
+                }).then(() => {
+                    showSuccessMessage('تمت المشاركة بنجاح! 📤✅');
+                }).catch(() => {
+                    copyToClipboard(url);
+                });
+            } else {
+                copyToClipboard(url);
+                showSuccessMessage('تم نسخ الرابط للمشاركة! 📋✅');
+            }
+        }
+    </script>
 </body>
+</html>
